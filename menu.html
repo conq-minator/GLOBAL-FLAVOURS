@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu - Global Flavours</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      animation: fadeIn 1s ease-out forwards;
+    }
+    .item-card {
+      transition: transform 0.2s ease;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+    .item-card:hover {
+      transform: scale(1.03);
+    }
+    .dish-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      image-rendering: auto;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+  <!-- Back to Home -->
+  <div class="text-left px-6 py-4">
+    <a href="index.html" class="text-blue-600 hover:underline text-lg">← Back to Home</a>
+  </div>
+
+  <section class="max-w-6xl mx-auto px-6 py-10">
+    <h1 class="text-4xl font-bold text-center mb-10">🍽 Our Menu</h1>
+
+    <!-- Dishes -->
+    <h2 class="text-2xl font-semibold mb-4">Main Dishes</h2>
+    <div class="grid md:grid-cols-3 gap-6 mb-10" id="dishes"></div>
+
+    <!-- Drinks -->
+    <h2 class="text-2xl font-semibold mb-4">Drinks</h2>
+    <div class="grid md:grid-cols-3 gap-6 mb-10" id="drinks"></div>
+
+    <!-- Coffee -->
+    <h2 class="text-2xl font-semibold mb-4">Coffee</h2>
+    <div class="grid md:grid-cols-3 gap-6 mb-10" id="coffee"></div>
+
+    <div class="text-center">
+      <button onclick="placeOrder()" class="bg-orange-500 text-white px-6 py-3 rounded-full hover:bg-orange-600 transition">🛒 Place Order</button>
+    </div>
+  </section>
+
+  <script>
+    const dishes = [
+      { name: "Spicy Lamb Curry", price: 320, img: "https://i.ibb.co/S7M6g9L" },
+      { name: "Fusion Paneer Tikka", price: 280, img: "https://i.ibb.co/xKnZGyg" },
+      { name: "Thai Basil Chicken", price: 300, img: "https://i.ibb.co/xKhLSR2" },
+      { name: "Korean BBQ Bowl", price: 350, img: "https://i.ibb.co/cSd3H9X" },
+      { name: "Mediterranean Veg Stack", price: 270, img: "https://i.ibb.co/qL0762F" },
+      { name: "Butter Garlic Prawns", price: 390, img: "https://i.ibb.co/DfHrGTW" },
+      { name: "Teriyaki Tofu Bowl", price: 260, img: "https://i.ibb.co/YTPjvL0" }
+    ];
+
+    const drinks = [
+      { name: "Mango Mint Cooler", price: 120, img: "https://i.ibb.co/6cyN4s3" },
+      { name: "Sparkling Lemonade", price: 100, img: "https://i.ibb.co/b5yh9Fn" },
+      { name: "Berry Fizz", price: 130, img: "https://i.ibb.co/Txs0GK3" },
+      { name: "Cucumber Tonic", price: 110, img: "https://i.ibb.co/Ps026rs" },
+      { name: "Tropical Punch", price: 140, img: "https://i.ibb.co/RT6TSTr" },
+      { name: "Lychee Soda", price: 125, img: "https://i.ibb.co/8nVC8Z9" }
+    ];
+
+    const coffee = [
+      { name: "Espresso Shot", price: 90, img: "https://i.ibb.co/yFNG4KT" },
+      { name: "Cappuccino", price: 120, img: "https://i.ibb.co/VcT1KPT" },
+      { name: "Iced Latte", price: 130, img: "https://i.ibb.co/BVkGCnJ" },
+      { name: "Mocha Blend", price: 140, img: "https://i.ibb.co/qLQm4MS" },
+      { name: "Hazelnut Brew", price: 150, img: "https://i.ibb.co/23sDLVB" }
+    ];
+
+    function renderItems(items, containerId) {
+      const container = document.getElementById(containerId);
+      items.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "item-card bg-orange-50 p-4 rounded shadow";
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" class="dish-img mb-4" />
+          <h3 class="text-lg font-semibold mb-1">${item.name}</h3>
+          <p class="text-gray-700 mb-2">₹${item.price}</p>
+          <label class="block text-sm text-gray-600 mb-1">Quantity:</label>
+          <input type="number" min="1" value="1" class="quantity w-full border p-2 rounded mb-2" data-name="${item.name}" data-price="${item.price}" />
+          <button onclick="addToOrder(this)" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Add to Order</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    renderItems(dishes, "dishes");
+    renderItems(drinks, "drinks");
+    renderItems(coffee, "coffee");
+
+    function addToOrder(btn) {
+      const input = btn.previousElementSibling;
+      const name = input.dataset.name;
+      const price = parseInt(input.dataset.price);
+      let qty = parseInt(input.value);
+      if (qty < 1) qty = 1;
+
+      let order = JSON.parse(localStorage.getItem("order")) || [];
+      const existing = order.find(item => item.name === name);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        order.push({ name, price, qty });
+      }
+      localStorage.setItem("order", JSON.stringify(order));
+      btn.textContent = "✔ Added";
+      btn.disabled = true;
+    }
+
+    function placeOrder() {
+      window.location.href = "delivery.html";
+    }
+  </script>
+</body>
+</html>
