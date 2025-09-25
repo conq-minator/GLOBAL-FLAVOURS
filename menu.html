@@ -62,30 +62,30 @@
 
   <script>
     const dishes = [
-      { name: "Spicy Lamb Curry", price: 320, img: "https://i.ibb.co/S7M6g9L" },
-      { name: "Fusion Paneer Tikka", price: 280, img: "https://i.ibb.co/xKnZGyg" },
-      { name: "Thai Basil Chicken", price: 300, img: "https://i.ibb.co/xKhLSR2" },
-      { name: "Korean BBQ Bowl", price: 350, img: "https://i.ibb.co/cSd3H9X" },
-      { name: "Mediterranean Veg Stack", price: 270, img: "https://i.ibb.co/qL0762F" },
-      { name: "Butter Garlic Prawns", price: 390, img: "https://i.ibb.co/DfHrGTW" },
-      { name: "Teriyaki Tofu Bowl", price: 260, img: "https://i.ibb.co/YTPjvL0" }
+      { name: "Spicy Lamb Curry", price: 320, img: "https://i.ibb.co/bRC6V8fN/Screenshot-2025-09-25-194203.png"},
+      { name: "Fusion Paneer Tikka", price: 280, img: "https://i.ibb.co/wZntCTQ6/Screenshot-2025-09-25-194303.png"},
+      { name: "Thai Basil Chicken", price: 300, img: "https://i.ibb.co/Kc6hj35S/Screenshot-2025-09-25-194339.png"},
+      { name: "Korean BBQ Bowl", price: 350, img: "https://i.ibb.co/G4jpLD34/Screenshot-2025-09-25-193834.png"},
+      { name: "Mediterranean Veg Stack", price: 270, img: "https://i.ibb.co/twZQR1Pf/Screenshot-2025-09-25-193943.png"},
+      { name: "Butter Garlic Prawns", price: 390, img: "https://i.ibb.co/qY3J0Vj2/Screenshot-2025-09-25-194028.png" },
+      { name: "Teriyaki Tofu Bowl", price: 260, img: "https://i.ibb.co/6Jrs6WXS/Screenshot-2025-09-25-194122.png"}
     ];
 
     const drinks = [
-      { name: "Mango Mint Cooler", price: 120, img: "https://i.ibb.co/6cyN4s3" },
-      { name: "Sparkling Lemonade", price: 100, img: "https://i.ibb.co/b5yh9Fn" },
-      { name: "Berry Fizz", price: 130, img: "https://i.ibb.co/Txs0GK3" },
-      { name: "Cucumber Tonic", price: 110, img: "https://i.ibb.co/Ps026rs" },
-      { name: "Tropical Punch", price: 140, img: "https://i.ibb.co/RT6TSTr" },
-      { name: "Lychee Soda", price: 125, img: "https://i.ibb.co/8nVC8Z9" }
+      { name: "Mango Mint Cooler", price: 120, img: "https://i.ibb.co/0pnQfJg5/Whats-App-Image-2025-09-25-at-16-52-22-465fa296.jpg" },
+      { name: "Sparkling Lemonade", price: 100, img: "https://i.ibb.co/xqcvTYQR/Whats-App-Image-2025-09-25-at-16-51-03-3e038903.jpg" },
+      { name: "Berry Fizz", price: 130, img: "https://i.ibb.co/0Rx9LBbp/Whats-App-Image-2025-09-25-at-16-53-03-d40c1fd5.jpg" },
+      { name: "Cucumber Tonic", price: 110, img: "https://i.ibb.co/vCRNjcC9/Whats-App-Image-2025-09-25-at-16-36-53-a5850499.jpg" },
+      { name: "Tropical Punch", price: 140, img: "https://i.ibb.co/k2D2y2bc/Whats-App-Image-2025-09-25-at-16-36-15-47963263.jpg" },
+      { name: "Lychee Soda", price: 125, img: "https://i.ibb.co/hxv68zVQ/Whats-App-Image-2025-09-25-at-16-53-33-46f97535.jpg" }
     ];
 
     const coffee = [
-      { name: "Espresso Shot", price: 90, img: "https://i.ibb.co/yFNG4KT" },
-      { name: "Cappuccino", price: 120, img: "https://i.ibb.co/VcT1KPT" },
-      { name: "Iced Latte", price: 130, img: "https://i.ibb.co/BVkGCnJ" },
-      { name: "Mocha Blend", price: 140, img: "https://i.ibb.co/qLQm4MS" },
-      { name: "Hazelnut Brew", price: 150, img: "https://i.ibb.co/23sDLVB" }
+      { name: "Espresso Shot", price: 90, img: "https://i.ibb.co/60yVXGhy/Whats-App-Image-2025-09-25-at-16-59-51-a3e7293b.jpg"},
+      { name: "Cappuccino", price: 120, img: "https://i.ibb.co/ycq93bqV/Whats-App-Image-2025-09-25-at-17-02-16-b7d6297e.jpg"},
+      { name: "Iced Latte", price: 130, img: "https://i.ibb.co/vx9hjXWL/Whats-App-Image-2025-09-25-at-17-01-33-db141ad7.jpg"},
+      { name: "Mocha Blend", price: 140, img: "https://i.ibb.co/7xmrTJfg/Whats-App-Image-2025-09-25-at-17-00-52-f90a5a5a.jpg"},
+      { name: "Hazelnut Brew", price: 150, img: "https://i.ibb.co/1GdDpyxW/Whats-App-Image-2025-09-25-at-16-59-18-125878f0.jpg"}
     ];
 
     function renderItems(items, containerId) {
@@ -124,8 +124,21 @@
         order.push({ name, price, qty });
       }
       localStorage.setItem("order", JSON.stringify(order));
+
       btn.textContent = "✔ Added";
       btn.disabled = true;
+
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "🗑 Remove";
+      removeBtn.className = "bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600";
+      removeBtn.onclick = () => {
+        order = order.filter(item => item.name !== name);
+        localStorage.setItem("order", JSON.stringify(order));
+        btn.textContent = "Add to Order";
+        btn.disabled = false;
+        removeBtn.remove();
+      };
+      btn.parentNode.appendChild(removeBtn);
     }
 
     function placeOrder() {
