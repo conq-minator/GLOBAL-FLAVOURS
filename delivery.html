@@ -43,25 +43,42 @@
   </section>
 
   <script>
-    const orderList = JSON.parse(localStorage.getItem("order")) || [];
+    let orderList = JSON.parse(localStorage.getItem("order")) || [];
     const summary = document.getElementById("order-summary");
     const totalPrice = document.getElementById("total-price");
-    let total = 0;
 
-    orderList.forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = `${item.name} × ${item.qty} — ₹${item.price * item.qty}`;
-      summary.appendChild(li);
-      total += item.price * item.qty;
-    });
+    function renderOrder() {
+      summary.innerHTML = "";
+      let total = 0;
 
-    totalPrice.textContent = total;
+      orderList.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.className = "flex justify-between items-center mb-2";
+        li.innerHTML = `
+          <span>${item.name} × ${item.qty} — ₹${item.price * item.qty}</span>
+          <button class="text-red-600 hover:underline" onclick="removeItem(${index})">❌ Remove</button>
+        `;
+        summary.appendChild(li);
+        total += item.price * item.qty;
+      });
+
+      totalPrice.textContent = total;
+    }
+
+    function removeItem(index) {
+      orderList.splice(index, 1);
+      localStorage.setItem("order", JSON.stringify(orderList));
+      renderOrder();
+    }
+
+    renderOrder();
 
     document.querySelector("form").addEventListener("submit", e => {
       e.preventDefault();
       alert("✅ Order placed successfully!");
       localStorage.removeItem("order");
       e.target.reset();
+      renderOrder();
     });
   </script>
 </body>
