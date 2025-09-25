@@ -5,17 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Delivery - Global Flavours</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      animation: fadeIn 1s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body class="bg-white text-gray-800">
-  <section class="max-w-xl mx-auto py-16 px-6">
-    <h1 class="text-3xl font-bold mb-6 text-center">🚚 Order Delivery</h1>
+  <!-- Back to Home -->
+  <div class="text-left px-6 py-4">
+    <a href="index.html" class="text-blue-600 hover:underline text-lg">← Back to Home</a>
+  </div>
+
+  <!-- Delivery Section -->
+  <section class="max-w-3xl mx-auto px-6 py-10">
+    <h1 class="text-3xl font-bold mb-6 text-center">🚚 Delivery Details</h1>
+
+    <!-- Order Summary -->
+    <div class="bg-orange-50 p-6 rounded shadow mb-8">
+      <h2 class="text-xl font-semibold mb-4">🛒 Your Order</h2>
+      <ul id="order-summary" class="mb-4 text-gray-700"></ul>
+      <p class="font-bold text-lg">Total: ₹<span id="total-price">0</span></p>
+    </div>
+
+    <!-- Delivery Form -->
     <form class="space-y-4">
-      <input type="text" placeholder="Your Name" class="w-full border p-3 rounded" />
-      <input type="text" placeholder="Delivery Address" class="w-full border p-3 rounded" />
-      <input type="tel" placeholder="Phone Number" class="w-full border p-3 rounded" />
-      <textarea placeholder="Your Order Details" class="w-full border p-3 rounded h-32"></textarea>
-      <button type="submit" class="bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600">Place Order</button>
+      <input type="text" placeholder="Your Name" class="w-full border p-3 rounded" required />
+      <input type="text" placeholder="Delivery Address" class="w-full border p-3 rounded" required />
+      <input type="tel" placeholder="Phone Number" class="w-full border p-3 rounded" required />
+      <button type="submit" class="bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600 transition">📦 Place Final Order</button>
     </form>
   </section>
+
+  <script>
+    const orderList = JSON.parse(localStorage.getItem("order")) || [];
+    const summary = document.getElementById("order-summary");
+    const totalPrice = document.getElementById("total-price");
+    let total = 0;
+
+    orderList.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = `${item.name} × ${item.qty} — ₹${item.price * item.qty}`;
+      summary.appendChild(li);
+      total += item.price * item.qty;
+    });
+
+    totalPrice.textContent = total;
+
+    document.querySelector("form").addEventListener("submit", e => {
+      e.preventDefault();
+      alert("✅ Order placed successfully!");
+      localStorage.removeItem("order");
+      e.target.reset();
+    });
+  </script>
 </body>
 </html>
